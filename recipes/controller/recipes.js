@@ -1,16 +1,11 @@
 var recipes = require('../data/recipes').data;
-var _ = require('lodash');
-//var baseController = require('../framework/base/controller/base-controller');
-//var recipesController = _.cloneDeep(baseController);
 
 exports.create = function(app) {
-    //baseController
-
     app.get('/recipesCtrl',  function(req, res) {
         console.log('app.get - Time:', Date.now());
-        console.log('app.get req.body.id:', req.body.id);
-        console.log('app.get - req.query.id:', req.query.id);
-        console.log('app.get - req.params.id:', req.params.id);
+        console.log('app.get req.body:', req.body);
+        console.log('app.get - req.query:', req.query);
+        console.log('app.get - req.params:', req.params);
         res.send(recipes);
     });
 

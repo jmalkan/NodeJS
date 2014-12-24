@@ -28,7 +28,8 @@ app.all('*', function (req, res, next) {
 );
 
 var recipes = require('./recipes');
-var recipesController = require('./controller/recipes').create(app);
+var recipesCtrl = require('./controller/recipes').create(app);
+//var recipesController = require('./controller/recipes-controller').create(app, null, null, 'recipesController');
 //var controllers = require('controllers');
 
 app.get('/', function(req, res) {
