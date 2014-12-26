@@ -11,64 +11,70 @@ var Proto = require('uberproto');
 
 var BaseService = Proto.extend({
     dao: null,
-    initialize: function(dao) {
+    init: function(dao) {
         this.dao = dao;
     },
     findAll: function() {
         var foundEntities = null;
 
-        _beforeFindAll();
-        foundEntities = _implementFindAll();
-        _afterFindAll(foundEntities);
+        this._beforeFindAll();
+        foundEntities = this._implementFindAll();
+        this._afterFindAll(foundEntities);
+
+        return foundEntities;
+    },
+    find: function(params) {
+        var foundEntities = null;
+
+        this._beforeFind(params);
+        foundEntities = this._implementFind(params);
+        this._afterFind(foundEntities);
 
         return foundEntities;
     },
     findById: function(id) {
         var foundEntity = null;
 
-        _beforeFindById(id);
-        foundEntity = _implementFindById(id);
-        _afterFindById(id, foundEntity);
+        this._beforeFindById(id);
+        foundEntity = this._implementFindById(id);
+        this._afterFindById(id, foundEntity);
 
         return foundEntity;
-    },
-    find: function(request) {
-        var foundEntities = null;
-
-        _beforeFind(request);
-        foundEntities = _implementFind(request);
-        _afterFind(foundEntities);
-
-        return foundEntities;
     },
     insert: function(entity) {
         var savedEntity = null;
 
-        _beforeInsert(entity);
-        savedEntity = _implementInsert(entity);
-        _afterInsert(savedEntity);
+        this._beforeInsert(entity);
+        this._validateBeforeInsert(entity);
+        savedEntity = this._implementInsert(entity);
+        this._validateAfterInsert(savedEntity);
+        this._afterInsert(savedEntity);
 
         return savedEntity;
     },
     update: function(id, entity) {
-        var modifiedEntity = null;
+        var updatedEntity = null;
 
-        _beforeModify(id, entity);
-        modifiedEntity = _implementModify(id, entity);
-        _afterModify(id, modifiedEntity);
+        this._beforeUpdate(id, entity);
+        this._validateBeforeUpdate(id, entity);
+        updatedEntity = this._implementUpdate(id, entity);
+        this._validateAfterUpdate(id, updatedEntity);
+        this._afterUpdate(id, updatedEntity);
 
-        return modifiedEntity;
+        return updatedEntity;
     },
-    delete: function(id) {
-        _beforeRemove(id);
-        _implementRemove(id);
-        _afterRemove(id);
+    remove: function(id) {
+        this._beforeRemove(id);
+        this._validateBeforeRemove(id);
+        this._implementRemove(id);
+        this._validateAfterRemove(id);
+        this._afterRemove(id);
     },
     _beforeFindAll: function() {
         return;
     },
     _implementFindAll: function() {
-        return dao.findAll();
+        return service.findAll();
     },
     _afterFindAll: function(foundEntities) {
         return;
@@ -77,16 +83,16 @@ var BaseService = Proto.extend({
         return;
     },
     _implementFindById: function(id) {
-        return dao.findById(id);
+        return this.service.findById(id);
     },
     _afterFindById: function(id, foundEntity) {
         return;
     },
-    _beforeFind: function(request) {
+    _beforeFind: function(params) {
         return;
     },
-    _implementFind: function(request) {
-        return dao.find(request);
+    _implementFind: function(params) {
+        return this.service.find(params);
     },
     _afterFind: function(foundEntities) {
         return;
@@ -94,28 +100,49 @@ var BaseService = Proto.extend({
     _beforeInsert: function(entity) {
         return;
     },
+    _validateBeforeInsert: function(entity) {
+        return;
+    },
     _implementInsert: function(entity) {
-        return dao.insert(request);
+        return this.service.insert(entity);
     },
     _afterInsert: function(savedEntity) {
         return;
     },
-    _beforeUpdate: function(entity) {
+    _validateAfterInsert: function(savedEntity) {
+        return;
+    },
+    _beforeUpdate: function(id, entity) {
+        return;
+    },
+    _validateBeforeUpdate: function(id, entity) {
         return;
     },
     _implementUpdate: function(id, entity) {
-        return dao.update(id, entity);
+        return this.service.update(id, entity);
     },
-    _afterUpdate: function(id, modifiedEntity) {
+    _validateAfterUpdate: function(id, updatedEntity) {
         return;
     },
-    _beforeDelete: function(id) {
+    _afterUpdate: function(id, updatedEntity) {
         return;
     },
-    _implementDelete: function(id) {
-        return dao.delete(id);
+    _beforeRemove: function(id) {
+        return;
     },
-    _afterDelete: function(id) {
+    _validateBeforeRemove: function(id) {
+        return;
+    },
+    _implementRemove: function(id) {
+        return this.service.remove(id);
+    },
+    _validateAfterRemove: function(id) {
+        return;
+    },
+    _afterRemove: function(id) {
         return;
     }
 });
+
+
+module.exports = BaseService;

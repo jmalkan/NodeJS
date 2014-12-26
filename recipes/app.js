@@ -45,13 +45,13 @@ var baseController = require('./framework/base/controller');
 
 
 
-var recipesController = require('./controller/recipes-controller');
+var RecipesController = require('./controller/recipes-controller');
 //var recipesController = RecipesController();
 //console.log("===================");
 //console.log(recipesController);
 //console.log("===================");
 
-var recipesController = recipesController.init(app, null, null, '/recipesController');
+var recipesController = RecipesController.init(app, null, '/recipesController');
 //console.log("===================");
 //console.log(recipesController.findById('100'));
 //console.log("===================");

@@ -21,6 +21,7 @@ var BaseController = Proto.extend({
     removeURI: '.delete/:id',
     init: function(app, socketService, service, baseEndpoint) {
         self = this;
+        service.init();
 
         this.app = app;
         this.service = service;
@@ -105,7 +106,7 @@ var BaseController = Proto.extend({
         return;
     },
     _implementFindAll: function() {
-        return service.findAll();
+        return this.service.findAll();
     },
     _afterFindAll: function(foundEntities) {
         return;
