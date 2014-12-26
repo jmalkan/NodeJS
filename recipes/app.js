@@ -33,23 +33,23 @@ app.all('*', function (req, res, next) {
 
 var Cat = require('./cat')
 var garfield = Cat();
-console.log(garfield.hasBeenWalked());
+//console.log(garfield.hasBeenWalked());
 
 var recipes = require('./recipes');
 var recipesCtrl = require('./controller/recipes').create(app);
 var baseController = require('./framework/base/controller');
 
-console.log(baseController);
-console.log("========APP===========");
+//console.log(baseController);
+//console.log("========APP===========");
 
 
 
 
 var recipesController = require('./controller/recipes-controller');
 //var recipesController = RecipesController();
-console.log("===================");
-console.log(recipesController);
-console.log("===================");
+//console.log("===================");
+//console.log(recipesController);
+//console.log("===================");
 
 var recipesController = recipesController.init(app, null, null, '/recipesController');
 //console.log("===================");

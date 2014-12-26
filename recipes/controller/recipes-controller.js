@@ -30,10 +30,19 @@ var BaseController = require('../framework/base/controller');
 
 
 var RecipesController = BaseController.extend({
-    _beforeFindAll: function(param) {
+    init: function(app, socketService, baseEndpoint) {
+        this._super(app, socketService, service, baseEndpoint);
+    },
+    _beforeFind: function(param) {
         console.log('_beforeFind param:', param);
     },
-    _implementFindAll: function(request) {
+    _implementFind: function(param) {
+        return recipes[1];
+    },
+    _beforeFindAll: function() {
+        console.log('_beforeFindAll');
+    },
+    _implementFindAll: function() {
         return recipes;
     },
     _beforeFindById: function(id) {
@@ -68,5 +77,5 @@ var RecipesController = BaseController.extend({
 
 module.exports = RecipesController;
 
-console.log(RecipesController);
-console.log("========RecipesController===========");
+//console.log(RecipesController);
+//console.log("========RecipesController===========");
