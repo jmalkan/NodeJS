@@ -1,11 +1,39 @@
 var recipes = require('../data/recipes').data;
 var BaseController = require('../framework/base/controller');
 
+
+//console.log(BaseController);
+//console.log("========RecipesController===========");
+//
+//function RecipesController() {
+//    var recipesController = {};
+//    recipesController.__proto__ = BaseController();
+//
+//    recipesController._beforeFind = function(param) {
+//        console.log('_beforeFind param:', param);
+//    };
+//
+//    recipesController._implementFind = function(request) {
+//        return recipes;
+//    };
+//
+//    recipesController._beforeFindById = function(id) {
+//        console.log('_beforeFindById id:', id);
+//    };
+//
+//    recipesController._implementFindById = function(id) {
+//        return recipes[0];
+//    }
+//
+//    return recipesController;
+//};
+
+
 var RecipesController = BaseController.extend({
-    _beforeFind: function(param) {
+    _beforeFindAll: function(param) {
         console.log('_beforeFind param:', param);
     },
-    _implementFind: function(request) {
+    _implementFindAll: function(request) {
         return recipes;
     },
     _beforeFindById: function(id) {
@@ -15,8 +43,6 @@ var RecipesController = BaseController.extend({
         return recipes[0];
     }
 });
-
-exports.RecipesController;
 
 
 //var Proto = require('uberproto');
@@ -37,5 +63,10 @@ exports.RecipesController;
 //        return recipes[0];
 //    }
 //}, BaseController);
-//
-//exports.RecipesController;
+
+
+
+module.exports = RecipesController;
+
+console.log(RecipesController);
+console.log("========RecipesController===========");

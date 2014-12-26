@@ -1,7 +1,11 @@
 var express = require('express');
+var Proto = require('uberproto');
+var bodyParser = require('body-parser');
 
 var app = express();//express.createServer();
-app.use(express.bodyParser());
+// parse application/json
+app.use(bodyParser.json());
+//app.use(express.bodyParser());
 
 
 // a middleware with no mount path; gets executed for every request to the app
@@ -27,9 +31,30 @@ app.all('*', function (req, res, next) {
   }
 );
 
+var Cat = require('./cat')
+var garfield = Cat();
+console.log(garfield.hasBeenWalked());
+
 var recipes = require('./recipes');
 var recipesCtrl = require('./controller/recipes').create(app);
-//var recipesController = require('./controller/recipes-controller').create(app, null, null, 'recipesController');
+var baseController = require('./framework/base/controller');
+
+console.log(baseController);
+console.log("========APP===========");
+
+
+
+
+var recipesController = require('./controller/recipes-controller');
+//var recipesController = RecipesController();
+console.log("===================");
+console.log(recipesController);
+console.log("===================");
+
+var recipesController = recipesController.init(app, null, null, '/recipesController');
+//console.log("===================");
+//console.log(recipesController.findById('100'));
+//console.log("===================");
 //var controllers = require('controllers');
 
 app.get('/', function(req, res) {
