@@ -8,7 +8,8 @@ var RecipesService = BaseService.extend({
     },
     _implementFind: function(param) {
         console.log('RecipesService._beforeFind param:', param);
-        return recipes[1];
+        throw 'unsupported operation';
+        //return recipes[1];
     },
     _implementFindAll: function() {
         console.log('RecipesService._implementFindAll');
