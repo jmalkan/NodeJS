@@ -83,7 +83,7 @@ var BaseService = Proto.extend({
         return;
     },
     _implementFindById: function(id) {
-        return this.service.findById(id);
+        return this.dao.findById(id);
     },
     _afterFindById: function(id, foundEntity) {
         return;
@@ -92,7 +92,7 @@ var BaseService = Proto.extend({
         return;
     },
     _implementFind: function(params) {
-        return this.service.find(params);
+        return this.dao.find(params);
     },
     _afterFind: function(foundEntities) {
         return;
@@ -104,7 +104,7 @@ var BaseService = Proto.extend({
         return;
     },
     _implementInsert: function(entity) {
-        return this.service.insert(entity);
+        return this.dao.insert(entity);
     },
     _afterInsert: function(savedEntity) {
         return;
@@ -119,7 +119,7 @@ var BaseService = Proto.extend({
         return;
     },
     _implementUpdate: function(id, entity) {
-        return this.service.update(id, entity);
+        return this.dao.update(id, entity);
     },
     _validateAfterUpdate: function(id, updatedEntity) {
         return;
@@ -134,7 +134,7 @@ var BaseService = Proto.extend({
         return;
     },
     _implementRemove: function(id) {
-        return this.service.remove(id);
+        return this.dao.remove(id);
     },
     _validateAfterRemove: function(id) {
         return;
