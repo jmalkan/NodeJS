@@ -6,12 +6,24 @@ var recipesService = require('./service/recipes');
 recipesService.init();
 
 // Create an in-memory CRUD service for our Todos
-var recipesMemoryService = memory();
+var todoService = memory();
 
 var app = feathers()
     // Set up REST and SocketIO APIs
     .configure(feathers.rest())
-    .configure(feathers.socketio())
+    // Set up Primus with SockJS
+    .configure(feathers.primus({transformer: 'sockjs'}, function(primus) {
+        // Set up Primus authorization here
+        primus.authorize(function (req, done) {
+            var auth;
+
+            try { auth = authParser(req.headers['authorization']) }
+            catch (ex) { return done(ex) }
+
+            // Do some async auth check
+            authCheck(auth, done);
+        });
+    }))
     // Parse HTTP bodies
     .use(bodyParser.json())
     .use(bodyParser.urlencoded({ extended: true }))
@@ -19,7 +31,7 @@ var app = feathers()
     .use(feathers.static(__dirname))
     // Host our Todos service on the /todos path
     .use('/recipes', recipesService)
-    .use('/recipes-memory', recipesMemoryService);
+    .use('/todos', todoService);
 
 
 // a middleware with no mount path; gets executed for every request to the app

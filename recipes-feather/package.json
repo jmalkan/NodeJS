@@ -5,8 +5,8 @@
   "description": "falcon main module",
   "dependencies": {
     "lodash": "*",
-    "express": "4.x",
     "redis": "0.12.1",
+    "sockjs": "^0.3.x",
     "uberproto": "1.1.x",
     "body-parser": "1.10.0",
     "feathers": "1.0.0",

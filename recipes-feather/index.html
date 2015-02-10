@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Feathers real-time Todos</title>
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <style type="text/css">
+            .done {
+                text-decoration: line-through;
+            }
+        </style>
+
+        <div class="container" id="todos">
+            <h1>Feathers real-time Todos</h1>
+
+            <ul class="todos list-unstyled"></ul>
+            <form role="form" class="create-todo">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="description" placeholder="Add a new Todo">
+                </div>
+                <button type="submit" class="btn btn-info col-md-12">Add Todo</button>
+            </form>
+        </div>
+
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="/node_modules/feathers/lib/providers/socket/socketio.js"></script>
+        <script>
+            var socket = io();
+            var el = $('#todos');
+
+            var app = {
+                getElement: function(todo) {
+                    return el.find('[data-id="' + todo.id + '"]')
+                },
+
+                addTodo: function(todo) {
+                    var html = '<li class="page-header checkbox" data-id="' + todo.id + '">' +
+                            '<label><input type="checkbox" name="done">' +
+                            todo.text +
+                            '</label><a href="javascript://" class="pull-right delete">' +
+                            '<span class="glyphicon glyphicon-remove"></span>' +
+                            '</a></li>';
+
+                    el.find('.todos').append(html);
+                    app.updateTodo(todo);
+                },
+                removeTodo: function(todo) {
+                    app.getElement(todo).remove();
+                },
+                updateTodo: function(todo) {
+                    var element = app.getElement(todo);
+                    var checkbox = element.find('[name="done"]').removeAttr('disabled');
+
+                    element.toggleClass('done', todo.complete);
+                    checkbox.prop('checked', todo.complete);
+                },
+                errorHandler: function(error) {
+                    if(error) {
+                        alert(error.message);
+                    }
+                }
+            };
+
+            el.on('submit', 'form', function (ev) {
+                var field = $(this).find('[name="description"]');
+
+                socket.emit('todos::create', {
+                    text: field.val(),
+                    complete: false
+                }, {}, app.errorHandler);
+
+                field.val('');
+                ev.preventDefault();
+            }).on('click', '.delete', function (ev) {
+                var id = $(this).parents('li').data('id');
+                socket.emit('todos::remove', id, {}, app.errorHandler);
+                ev.preventDefault();
+            }).on('click', '[name="done"]', function(ev) {
+                var id = $(this).parents('li').data('id');
+
+                $(this).attr('disabled', 'disabled');
+
+                socket.emit('todos::update', id, {
+                    complete: $(this).is(':checked')
+                }, {}, app.errorHandler);
+            });
+
+            socket.on('todos updated', app.updateTodo);
+            socket.on('todos removed', app.removeTodo);
+            socket.on('todos created', app.addTodo);
+            socket.emit('todos::find', {}, function (error, todos) {
+                todos.forEach(app.addTodo);
+            });
+        </script>
+    </body>
+</html>
